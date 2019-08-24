@@ -1,0 +1,57 @@
+# ICP1
+# Task 1:  State differences between Python 2 and Python 3 version.
+# Python 2 Vs Python 3
+#  older companies have used python 2 for more than a decade - companies are switching to python 3
+#  python 2 libraries are at times incompatible with python 3 - newer libraries built for python 3 work only on it
+#  python 2 we need to add a "u" to make a string a unicode as default is ASCII - python 3 strings are unicode and
+#                                                                                  unicode is more versatile
+# python 2 division rounds to the nearest whole number - python 3 division returns more intuitive decimal in its result
+# python 2 print statement is print "hello" - python 3 print statement is print("hello")
+# python 2 supports xrange() which outputs iterator object - python 3 does not have xrange()
+# python 2 error handling msg".... not defined " - python 3 error handling message "...^ invalid syntax"
+# Note: we can use "_future" to import division and print functions of python 3.x into python 2.x code"
+
+
+# Task 2: Input the string “Python” as a list of characters from console,
+# delete at least 2 characters,
+# reverse the resultant string and print it.
+
+mystring = input("Please enter a string:")
+s = mystring
+t = s
+t = s[0:4]
+print(t)
+
+
+def reverse(string):
+    string = "".join(reversed(string))
+    return string
+
+
+print("The original string is : ", t)
+print("The reversed string(using reversed) is : ", end="")
+print(reverse(t))
+
+# Take two numbers from user and perform arithmetic operations on them.
+mynum1 = input('Please enter first num:')
+mynum2 = input('Please enter second num:')
+
+num1 = int(mynum1)
+num2 = int(mynum2)
+
+add = num1 + num2
+sub = num2 - num1
+mul = num1 * num2
+div = num2 / num1
+rem = num1 % num2
+
+print("The arithmetic operations for addition:", add)
+print("The arithmetic operations for subtraction:", sub)
+print("The arithmetic operations for multiplication:", mul)
+print("The arithmetic operations for division:", div)
+print("The arithmetic operations for remainder:", rem)
+
+# Task 3: Write a program that accepts a sentence and replace each occurrence of ‘python’ with ‘pythons’ without
+# using regex
+mysen = "I love playing with python"
+print(mysen.replace("python", "pythons"))
