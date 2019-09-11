@@ -1,0 +1,21 @@
+#Task 1 - lbs to kgs
+n = int(input("Enter number of students: "))
+list1=[]
+list2=[]
+for x in range(n):
+    list1.append(float(input("Enter student "+str(x+1)+" weight: ")))
+for x in range(n):
+    list2.append((list1[x]*0.454))
+print("Weights of students in kgs: " +str(list2))
+
+
+#Task 2 - print alternate character
+def string_alternative():
+    str= input("Enter the string: ")
+    str1 = ""
+    for i in range(len(str)):
+        if(i%2==0):
+            str1=str1+str[i]
+    print("Printing alternate characters of the string: " +str1)
+string_alternative()
+

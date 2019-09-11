@@ -1,0 +1,24 @@
+file_name=input("Enter the file name: ")
+f=open(file_name, "r")
+count = {}
+k=f.readline()
+while(k!=""):
+    word = k.split(" ")
+
+    for s in word:
+        if s in count:
+            count[s] += 1
+        else:
+            count[s] = 1
+
+    k=f.readline()
+print(count)
+
+
+
+file_name_dest = input("Enter the destination file name: ")
+f=open(file_name_dest, "w+")
+for i in count:
+     f.write(i+" : "+str(count[i])+"\n")
+f.close()
+print(count)
