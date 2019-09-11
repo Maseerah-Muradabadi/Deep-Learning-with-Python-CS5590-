@@ -1,0 +1,47 @@
+class Employee:
+    empcount = 0
+    totalsalary = 0
+
+    def __init__(self, name, family, salary, department):
+        self.name = name
+        self.family = family
+        self.salary = salary
+        self.department = department
+        Employee.empcount += 1
+        Employee.totalsalary += salary
+
+    def getEmployeeCount(self):
+        return Employee.empcount
+
+    def AverageSalary(self):
+        return Employee.totalsalary / Employee.empcount
+
+    def EmployeeDetails(self):
+        print("Name: ", self.name, "Family: ", self.family, "Salary: ", self.salary, "Department: ", self.department)
+
+class FullTimeEmployee(Employee):
+    def _init_(self, name, family, salary, department):
+        Employee._init_(self, name, family, salary, department)
+
+choice = 'y'
+while choice == 'y':
+    name = input("Enter the name of the employee: ")
+    family = input("Enter the family name of employee: ")
+    salary = float(input("Enter employee salary: "))
+    department = input("Enter employee department: ")
+    emp_or_fullemp = int(input("Enter number 1 for employee and 2 for full time employee: "))
+
+    if emp_or_fullemp == 1:
+        emp = Employee(name, family, salary, department)
+    elif emp_or_fullemp == 2:
+        emp = FullTimeEmployee(name, family, salary, department)
+
+    emp.EmployeeDetails()
+
+    choice = input("Enter y to add Employee, enter n to see results: ")
+
+print("Employee count: ", Employee.empcount)
+print("Average salary of Employees: ", emp.AverageSalary())
+print("Full time Employee Count: ",FullTimeEmployee.empcount)
+
+

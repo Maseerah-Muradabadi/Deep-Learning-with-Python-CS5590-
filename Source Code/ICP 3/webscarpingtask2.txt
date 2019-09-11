@@ -1,0 +1,18 @@
+import requests
+from bs4 import BeautifulSoup
+
+# get data
+url = "https://en.wikipedia.org/wiki/Deep_learning"
+html = requests.get(url)
+soup = BeautifulSoup(html.content, "html.parser")
+
+# find title
+title = soup.findAll('title')
+print("title of the page is -------------------> ", title)
+
+# get all <div> content and then print content for any headers
+for div in soup.find_all('a'):
+    aTag = div.get('href')
+    # not all divs have h1 so only print if there is something to print
+    if aTag != None :
+        print(aTag)
