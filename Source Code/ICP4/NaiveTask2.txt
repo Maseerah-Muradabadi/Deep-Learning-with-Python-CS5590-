@@ -1,0 +1,29 @@
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+import pandas as pd
+from sklearn import metrics
+# Import clean data
+path = './glass.csv'
+df = pd.read_csv(path)
+# define target column
+y_data = df['Type']
+x_data = df.drop('Type', axis=1)
+# split data into training and testing and print the number of samples in each
+x_train_1, x_test_1, y_train_1, y_test_1 = train_test_split(x_data, y_data, test_size=0.30, random_state=0)
+print("number of test samples :", x_test_1.shape[0])
+print("number of training samples:",x_train_1.shape[0])
+# call naive bayes and assign it to model nb and fit naive bayes on training data
+nb = GaussianNB()
+nb.fit(x_train_1, y_train_1)
+# predict the model accuracy on testing data and print the important metrics for evaluation
+predicted = nb.predict(x_test_1)
+acc = metrics.accuracy_score(y_test_1, predicted)
+print("Accuracy of the mode:", round(acc*100, 2))
+print("Classification report is: \n", metrics.classification_report(y_test_1, predicted))
+print("Confusion matrix is : \n", metrics.confusion_matrix(y_test_1, predicted))
+
+# using the naive bayes model, apply a 4-fold cross validation on the dataset to calculate mean and std of cross
+# validated data
+Rcross = cross_val_score(nb, x_data, y_data, cv=4)
+print("The mean of the folds are", Rcross.mean(), "and the standard deviation is", Rcross .std())

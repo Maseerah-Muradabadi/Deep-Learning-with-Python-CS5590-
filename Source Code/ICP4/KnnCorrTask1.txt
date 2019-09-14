@@ -1,0 +1,24 @@
+import pandas as pd
+from sklearn.svm import SVC, LinearSVC
+from sklearn.neighbors import KNeighborsClassifier
+from scipy import stats
+
+
+train_df = pd.read_csv('./train_preprocessed.csv')
+test_df = pd.read_csv('./test_preprocessed.csv')
+X_train = train_df.drop("Survived",axis=1)
+Y_train = train_df["Survived"]
+X_test = test_df.drop("PassengerId",axis=1).copy()
+print(train_df[train_df.isnull().any(axis=1)])
+
+##KNN
+knn = KNeighborsClassifier(n_neighbors = 3)
+knn.fit(X_train, Y_train)
+Y_pred = knn.predict(X_test)
+acc_knn = round(knn.score(X_train, Y_train) * 100, 2)
+print("KNN accuracy is:", acc_knn)
+
+pearson_coef, p_value = stats.pearsonr(train_df['Sex'], train_df['Survived'])
+print("The Pearson Correlation Coefficient is", pearson_coef, " with a P-value of P = ", p_value)
+print("The p-value is 1 which is > 0.001. Therefore this implies that there is no significant correlation "
+      "between Sex and Survived and they do not affect each other")
