@@ -1,0 +1,67 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn import metrics
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+
+traint = pd.read_csv('./titanic_train.csv')
+
+# Part 1: Exploratory data Analysis
+traint.Survived.describe()
+# Handling Null Values
+nulls = pd.DataFrame(traint.isnull().sum().sort_values(ascending=False)[:25])
+nulls.columns = ['Null Count']
+nulls.index.name = 'Feature'
+print(nulls)
+##handling missing value
+data = traint.select_dtypes(include=[np.number]).interpolate().dropna()
+print(sum(data.isnull().sum() != 0))
+
+#Fixing Null Values
+traint["Embarked"] = traint["Embarked"].fillna("S")
+traint.drop("Cabin", axis=1, inplace=True)
+traint["Age"] = traint["Age"].fillna("29")
+
+#Removing uncorrelated features
+numeric_features = traint.select_dtypes(include=[np.number])
+corr=numeric_features.corr()
+print("The features that we will remove due to their irrelevance to target: ")
+print(corr['Survived'].sort_values(ascending=False)[-5:])
+traint = traint.drop(['Fare', 'Parch', 'PassengerId', 'SibSp'], axis=1)
+
+print("Columns After Removing Uncorrelated Columns:\n", traint.columns)
+
+# Encoding Categorical Features
+print("Before categorical conversion:", traint['Sex'][:5])
+traint['Sex'] = traint['Sex'].map({'female': 1, 'male': 0}).astype(int)
+print("After categorical conversion:", traint['Sex'][:5])
+
+
+
+#Part 2 - Fit Naive Bayes, SVM and KNN classifir on the model and calculate accuracy
+y_data = traint['Survived']
+x_data = traint.drop('Survived', axis=1)
+x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.30, random_state=0)
+print("number of test samples :", x_test.shape[0])
+print("number of training samples:", x_train.shape[0])
+
+nb = GaussianNB()
+nb.fit(x_train_1, y_train_1)
+# predict the model accuracy on testing data and print the important metrics for evaluation
+predicted = nb.predict(x_test_1)
+acc = metrics.accuracy_score(y_test_1, predicted)
+
+svc = SVC()
+svc.fit(X_train, Y_train)
+Y_pred = svc.predict(X_test)
+acc_svc = round(svc.score(X_train, Y_train) * 100, 2)
+
+knn = KNeighborsClassifier(n_neighbors = 3)
+knn.fit(X_train, Y_train)
+Y_pred = knn.predict(X_test)
+acc_knn = round(knn.score(X_train, Y_train) * 100, 2)
+print("NB Accuracy is:", round(acc*100, 2))
+print("svm accuracy is:", acc_svc)
+print("KNN accuracy is:", acc_knn)

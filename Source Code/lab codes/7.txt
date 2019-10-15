@@ -1,0 +1,73 @@
+import requests
+from bs4 import BeautifulSoup
+
+#text reading from given url
+url = "https://umkc.box.com/s/7by0f4540cdbdp3pm60h5fxxffefsvrw"
+open_url = requests.get(url).text
+
+#Parsing the web page and assigning to variable
+soup = BeautifulSoup(open_url, "html.parser")
+
+#all script and style elements are killed
+for i in soup(["script", "style"]):
+    i.extract()
+
+# getting the text by using get_text
+text_form= soup.body.get_text()
+
+# Text File saving
+with open('nlp_input.txt', 'w') as text_file:
+    text_file.write(str(text_form.encode("utf-8")))
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.stem import WordNetLemmatizer
+from nltk import FreqDist, ngrams
+import nltk
+nltk.download()
+
+#reading the file- data from file
+with open('C:/Users/ahmed/Desktop/Lab1_7/Lab1_7/nlp_input.txt','r') as text_file:
+    file = text_file.read()
+
+# Word_Tokenization
+tokens = word_tokenize(file)
+
+# Lemmatization
+lemma = WordNetLemmatizer()
+lemmatizer_Output = []
+print("Lemmatization Output : \n")
+for token in tokens:
+    #lematizing each word and appending to list
+    lemmatizer_Output.append(lemma.lemmatize(str(token)))
+print(lemmatizer_Output)
+
+# getting trigram from Lemmatized Output
+print("trigrams are :\n")
+trigrams_Output = []
+for tr in ngrams(tokens, 3):
+    # Fetching trigrams ,Iterating it and appending to list
+    trigrams_Output.append(tr)
+print(trigrams_Output)
+# triGram Word Frequency
+wordFrequency= FreqDist(trigrams_Output)
+# finding Most Common Words and Printing them
+mostComm = wordFrequency.most_common()
+print("triGrams frequency --From most to Least : \n", mostComm)
+# getting the Top 10 trigrams
+top_10 = wordFrequency.most_common(10)
+print("Top_10 triGrams are : \n", top_10)
+
+# Sentence Tokenization for getting sentences
+sentTokens = sent_tokenize(file)
+concatenated_array = []
+# Iterating the Sentences and appending the it in array
+for k in sentTokens:
+    # Iterating the trirams
+    for a, b, c in trigrams_Output:
+        # Iterating the Top_10 triGrams
+        for ((d, e, f), length) in top_10:
+            # Comparing the trigrams
+            if(a, b, c == d, e, f):
+                concatenated_array.append(k)
+
+print("Concatenated Array is  : ",concatenated_array)
+print("Maximum of Concatenated Array is as follow : ", max(concatenated_array))
